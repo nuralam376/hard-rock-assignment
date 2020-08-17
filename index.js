@@ -1,12 +1,31 @@
+// Displays the lyrics on the page
+function displayLyrics(lyric, artist, title) {
+	if (lyric.error) {
+		alert("Sorry, No lyric found for this song. Try for another one");
+		return;
+	}
+	console.log(lyric);
+	const singleLyric = document.querySelector(".single-lyrics");
+	singleLyric.innerHTML = `
+        <button class="btn go-back">&lsaquo;</button>
+        <h2 class="text-success mb-4">${title} - ${artist} </h2>
+        <pre class="lyric text-white">${lyric.lyrics}</pre>
+    `;
+
+	document.querySelector(".search-result").innerHTML = "";
+	singleLyric.style.display = "block";
+}
+
+// Fetch the the lyrics of the song
 function fetchLyric(artist, title) {
 	fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`)
 		.then((response) => response.json())
-		.then((json) => console.log(json));
+		.then((json) => displayLyrics(json, artist, title))
+		.catch((error) => alert(error));
 }
 
 // Display the songs in the page
 function displaySongs(song) {
-	console.log(song);
 	const songTitle = song.title;
 	const albumTitle = song.album.title;
 	const artistName = song.artist.name;
@@ -21,7 +40,7 @@ function displaySongs(song) {
         <p class="author lead">Album: ${albumTitle} by <span>${artistName}</span></p>
     </div>
     <div class="col-md-3 text-md-right text-center" id="getLyrics">
-        <button class="btn btn-success">Get Lyrics</button>
+        <button onclick = "fetchLyric('${artistName}','${songTitle}')" class="btn btn-success">Get Lyrics</button>
     </div>`;
 
 	songResults.appendChild(songInfo);
@@ -49,12 +68,15 @@ function handleSongs(songs) {
 function fetchSongs(songName) {
 	fetch(`https://api.lyrics.ovh/suggest/${songName}`)
 		.then((response) => response.json())
-		.then((json) => handleSongs(json));
+		.then((json) => handleSongs(json))
+		.catch((error) => alert(error));
 }
 
 // Handles the click after the user click the search button
 document.getElementById("search-song").addEventListener("click", function () {
 	const songName = document.getElementById("song-name").value;
+
+	document.querySelector(".single-lyrics").style.display = "none";
 
 	if (songName.length == 0 || songName.trim() == "") {
 		alert("Please enter the song name first");
