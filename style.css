@@ -37,13 +37,12 @@ body {
 .single-result {
 	background: rgba(255, 255, 255, 0.2);
 	border-radius: 15px;
-	display: none;
-}
-
-.simple-result {
-	display: none;
 }
 
 .single-lyrics {
+	display: none;
+}
+
+.search-result {
 	display: none;
 }
