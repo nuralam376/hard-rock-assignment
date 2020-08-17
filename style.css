@@ -43,6 +43,10 @@ body {
 	display: none;
 }
 
+.simple-result {
+	display: none;
+}
+
 .search-result {
 	display: none;
 }

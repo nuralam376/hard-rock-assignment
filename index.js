@@ -2,6 +2,7 @@
 const showSongsResults = () => {
 	document.querySelector(".single-lyrics").style.display = "none";
 	document.querySelector(".search-result").style.display = "block";
+	document.querySelector(".simple-result").style.display = "block";
 };
 
 // Displays the lyrics on the page
@@ -18,6 +19,7 @@ const displayLyrics = (lyric, artist, title) => {
         <pre class="lyric text-white">${lyric.lyrics}</pre>
     `;
 
+	document.querySelector(".simple-result").style.display = "none";
 	document.querySelector(".search-result").style.display = "none";
 	singleLyric.style.display = "block";
 };
@@ -36,6 +38,7 @@ const displaySongs = (song) => {
 	const albumTitle = song.album.title;
 	const artistName = song.artist.name;
 
+	const simpleSongResults = document.querySelector(".simple-result");
 	const songResults = document.querySelector(".search-result");
 
 	const songInfo = document.createElement("div");
@@ -49,6 +52,13 @@ const displaySongs = (song) => {
         <button onclick = "fetchLyric('${artistName}','${songTitle}')" class="btn btn-success">Get Lyrics</button>
     </div>`;
 
+	const simpleSong = document.createElement("div");
+	simpleSong.innerHTML = `
+            <p class="author lead"><strong>${albumTitle}</strong> Album by <span>${artistName}</span> <button class="btn btn-success">Get Lyrics</button></p>
+    `;
+
+	simpleSongResults.appendChild(simpleSong);
+	console.log(simpleSongResults);
 	songResults.appendChild(songInfo);
 };
 
@@ -59,6 +69,7 @@ const handleSongs = (songs) => {
 		return;
 	}
 
+	document.querySelector(".simple-result").style.display = "block";
 	document.querySelector(".search-result").style.display = "block";
 
 	for (let [index, song] of songs.data.entries()) {
@@ -89,5 +100,6 @@ document.getElementById("search-song").addEventListener("click", function () {
 	}
 
 	document.querySelector(".search-result").innerHTML = ""; // Clears the previous lists if any
+	document.querySelector(".simple-result").innerHTML = ""; // Clears the previous lists if any
 	fetchSongs(songName);
 });
