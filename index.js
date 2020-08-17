@@ -54,11 +54,15 @@ const displaySongs = (song) => {
 
 	const simpleSong = document.createElement("div");
 	simpleSong.innerHTML = `
-            <p class="author lead"><strong>${albumTitle}</strong> Album by <span>${artistName}</span> <button class="btn btn-success">Get Lyrics</button></p>
+            <p class="author lead">
+                <strong>${albumTitle}</strong> Album by <span>${artistName}</span> 
+                <button onclick = "fetchLyric('${artistName}','${songTitle}')" class="btn btn-success">
+                    Get Lyrics
+                </button>
+            </p>
     `;
 
 	simpleSongResults.appendChild(simpleSong);
-	console.log(simpleSongResults);
 	songResults.appendChild(songInfo);
 };
 
