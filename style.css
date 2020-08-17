@@ -43,6 +43,19 @@ body {
 	display: none;
 }
 
+.simple-result {
+	display: none;
+}
+
 .search-result {
 	display: none;
+}
+
+.go-back {
+	font-size: 80px;
+	color: white;
+}
+
+.go-back:hover {
+	color: coral;
 }

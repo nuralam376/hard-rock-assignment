@@ -1,35 +1,44 @@
+// Handles the go back button of the lyrics
+const showSongsResults = () => {
+	document.querySelector(".single-lyrics").style.display = "none";
+	document.querySelector(".search-result").style.display = "block";
+	document.querySelector(".simple-result").style.display = "block";
+};
+
 // Displays the lyrics on the page
-function displayLyrics(lyric, artist, title) {
+const displayLyrics = (lyric, artist, title) => {
 	if (lyric.error) {
 		alert("Sorry, No lyric found for this song. Try for another one");
 		return;
 	}
-	console.log(lyric);
+
 	const singleLyric = document.querySelector(".single-lyrics");
 	singleLyric.innerHTML = `
-        <button class="btn go-back">&lsaquo;</button>
+        <button class="btn go-back" onclick = "showSongsResults()">&lsaquo;</button>
         <h2 class="text-success mb-4">${title} - ${artist} </h2>
         <pre class="lyric text-white">${lyric.lyrics}</pre>
     `;
 
-	document.querySelector(".search-result").innerHTML = "";
+	document.querySelector(".simple-result").style.display = "none";
+	document.querySelector(".search-result").style.display = "none";
 	singleLyric.style.display = "block";
-}
+};
 
 // Fetch the the lyrics of the song
-function fetchLyric(artist, title) {
+const fetchLyric = (artist, title) => {
 	fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`)
 		.then((response) => response.json())
 		.then((json) => displayLyrics(json, artist, title))
 		.catch((error) => alert(error));
-}
+};
 
 // Display the songs in the page
-function displaySongs(song) {
+const displaySongs = (song) => {
 	const songTitle = song.title;
 	const albumTitle = song.album.title;
 	const artistName = song.artist.name;
 
+	const simpleSongResults = document.querySelector(".simple-result");
 	const songResults = document.querySelector(".search-result");
 
 	const songInfo = document.createElement("div");
@@ -43,16 +52,24 @@ function displaySongs(song) {
         <button onclick = "fetchLyric('${artistName}','${songTitle}')" class="btn btn-success">Get Lyrics</button>
     </div>`;
 
+	const simpleSong = document.createElement("div");
+	simpleSong.innerHTML = `
+            <p class="author lead"><strong>${albumTitle}</strong> Album by <span>${artistName}</span> <button class="btn btn-success">Get Lyrics</button></p>
+    `;
+
+	simpleSongResults.appendChild(simpleSong);
+	console.log(simpleSongResults);
 	songResults.appendChild(songInfo);
-}
+};
 
 // Handles the songs info
-function handleSongs(songs) {
+const handleSongs = (songs) => {
 	if (songs.data < 0) {
 		alert("No Data found");
 		return;
 	}
 
+	document.querySelector(".simple-result").style.display = "block";
 	document.querySelector(".search-result").style.display = "block";
 
 	for (let [index, song] of songs.data.entries()) {
@@ -62,15 +79,15 @@ function handleSongs(songs) {
 		}
 		displaySongs(song);
 	}
-}
+};
 
 // Fetch the results of the songs user entered
-function fetchSongs(songName) {
+const fetchSongs = (songName) => {
 	fetch(`https://api.lyrics.ovh/suggest/${songName}`)
 		.then((response) => response.json())
 		.then((json) => handleSongs(json))
 		.catch((error) => alert(error));
-}
+};
 
 // Handles the click after the user click the search button
 document.getElementById("search-song").addEventListener("click", function () {
@@ -83,5 +100,6 @@ document.getElementById("search-song").addEventListener("click", function () {
 	}
 
 	document.querySelector(".search-result").innerHTML = ""; // Clears the previous lists if any
+	document.querySelector(".simple-result").innerHTML = ""; // Clears the previous lists if any
 	fetchSongs(songName);
 });
