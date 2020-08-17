@@ -1,3 +1,9 @@
+// Handles the go back button of the lyrics
+const showSongsResults = () => {
+	document.querySelector(".single-lyrics").style.display = "none";
+	document.querySelector(".search-result").style.display = "block";
+};
+
 // Displays the lyrics on the page
 const displayLyrics = (lyric, artist, title) => {
 	if (lyric.error) {
@@ -7,12 +13,12 @@ const displayLyrics = (lyric, artist, title) => {
 
 	const singleLyric = document.querySelector(".single-lyrics");
 	singleLyric.innerHTML = `
-        <button class="btn go-back">&lsaquo;</button>
+        <button class="btn go-back" onclick = "showSongsResults()">&lsaquo;</button>
         <h2 class="text-success mb-4">${title} - ${artist} </h2>
         <pre class="lyric text-white">${lyric.lyrics}</pre>
     `;
 
-	document.querySelector(".search-result").innerHTML = "";
+	document.querySelector(".search-result").style.display = "none";
 	singleLyric.style.display = "block";
 };
 
