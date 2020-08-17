@@ -6,6 +6,8 @@ function fetchLyric(artist, title) {
 
 // Display the songs in the page
 function displaySongs(song) {
+	console.log(song);
+	const songTitle = song.title;
 	const albumTitle = song.album.title;
 	const artistName = song.artist.name;
 
@@ -15,8 +17,8 @@ function displaySongs(song) {
 	songInfo.className = "single-result row align-items-center my-3 p-3";
 	songInfo.innerHTML = `
     <div class="col-md-9" id="songInfo">
-        <h3 class="lyrics-name">${albumTitle}</h3>
-        <p class="author lead">Album by <span>${artistName}</span></p>
+        <h3 class="lyrics-name">${songTitle}</h3>
+        <p class="author lead">Album: ${albumTitle} by <span>${artistName}</span></p>
     </div>
     <div class="col-md-3 text-md-right text-center" id="getLyrics">
         <button class="btn btn-success">Get Lyrics</button>
@@ -34,7 +36,11 @@ function handleSongs(songs) {
 
 	document.querySelector(".search-result").style.display = "block";
 
-	for (let song of songs.data) {
+	for (let [index, song] of songs.data.entries()) {
+		// Shows only 10 items of the songs array
+		if (index == 10) {
+			break;
+		}
 		displaySongs(song);
 	}
 }
